@@ -6,8 +6,6 @@ let height = document.querySelector("svg").getBBox().height;
 
 gsap.set("#h2-1", { opacity: 0 });
 gsap.set("#bg_grad", { attr: { cy: "-50" } });
-gsap.set(["#dinoL", "#dinoR"], { y: 80 });
-gsap.set("#dinoL", { x: -10 });
 
 const mm = gsap.matchMedia();
 mm.add("(max-width: 1922px)", () => {
@@ -253,14 +251,6 @@ function screenToSVG(svg, x, y) {
     return { x: Math.floor(cursorPt.x), y: Math.floor(cursorPt.y) }
  }
 
-// Pixel-art dinosaur sprite animation
 (function() {
-  const dino = document.querySelector('.dino-sprite');
-  if (!dino) return;
-  let frame = 0;
-  const totalFrames = 6;
-  setInterval(() => {
-    dino.style.backgroundPosition = `-${frame * 48}px 0`;
-    frame = (frame + 1) % totalFrames;
-  }, 120);
+
 })();
