@@ -2,6 +2,10 @@ body {
     margin: 0;
     padding: 0;
     font-family: "Canva Sans", Arial, Helvetica, sans-serif;
+    cursor: url('assets/arrow_cursor.png') 0 0, auto !important;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    /* Use an 80x80 px PNG for the arrow cursor */
 }
 
 .wrapper {
@@ -31,10 +35,10 @@ svg {
     bottom: 5%;
     right: 0px;
     transform: translateX(-50%);
-    border: 1px solid #fff;
-    border-radius: 5px;
-    font-size: 0.9rem;
-    padding: 0.5rem 0.7em;
+    border: 1.5px solid #fff;
+    border-radius: 8px;
+    font-size: 1.0rem;
+    padding: 0.7rem 1.4em;
     background-color: transparent;
     color: #ffffff;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -67,5 +71,29 @@ svg {
     #info2 {
         transform-origin: 50% 50%;
         transform: translateY(-120px) scale(0.8);
+    }
+}
+
+#stars {
+    will-change: opacity;
+}
+
+/* Pixelated hand cursor for <button>, <a>, and .btn elements (80x80 px PNG) */
+button,
+a,
+.btn {
+    cursor: url('assets/pixelated-hand-cursor.png') 20 0, pointer !important;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+}
+
+/* Move LinkedIn button slightly left */
+.btn.btn_version {
+    right: 0px !important;
+}
+
+@media (max-width: 600px) {
+    .btn.btn_version {
+        right: 60px !important;
     }
 }
