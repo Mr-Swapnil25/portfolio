@@ -2,7 +2,7 @@
 
 ## 🌄 Overview
 
-This project is a **cinematic, interactive portfolio** that showcases my journey in data science, AI tools, and intelligent agent systems. It blends technology, creativity, and functionality, offering visitors a unique, scroll-driven 3D experience. Inspired by modern 3D developer portfolios[3][6][7], this site is both a technical showcase and a personal narrative.
+This project is a **cinematic, interactive portfolio** that showcases my journey in data science, AI tools, and intelligent agent systems. It blends technology, creativity, and functionality, offering visitors a unique, scroll-driven 3D experience. Inspired by modern 3D developer portfolios, this site is both a technical showcase and a personal narrative.
 
 ---
 

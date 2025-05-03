@@ -2,7 +2,6 @@ gsap.registerPlugin(ScrollTrigger);
 
 let speed = 100;
 let height = document.querySelector("svg").getBBox().height;
-//let svgCord = screenToSVG(document.querySelector("svg"), window.innerWidth / 2, window.innerHeight / 2);
 
 gsap.set("#h2-1", { opacity: 0 });
 gsap.set("#bg_grad", { attr: { cy: "-50" } });
@@ -11,6 +10,10 @@ const mm = gsap.matchMedia();
 mm.add("(max-width: 1922px)", () => {
     gsap.set(["#cloudStart-L", "#cloudStart-R"], { x: 10, opacity: 1 });
 });
+
+// Add performance optimization
+ScrollTrigger.config({ limitCallbacks: true });
+gsap.config({ nullTargetWarn: false });
 
 /*  SCENE 1 */
 let scene1 = gsap.timeline();
@@ -86,15 +89,11 @@ ScrollTrigger.create({
     start: "1% top",
     end: "2150 100%",
     scrub: 2
-    //markers: true,
-    //preventOverlaps: true, //if true, it will affect all preceding ScrollTriggers (you can use for example 'scrollTrigger1')
-    //fastScrollEnd: true,   //(default 2500px/s)
 });
 
 //sun motion
 sun.fromTo("#bg_grad", { attr: { cy: "-50" } }, { attr: { cy: "330" } }, 0);
 //bg change
-//sun.to("#sun", { attr: { offset: "0.15" } }, 0);
 sun.to("#bg_grad stop:nth-child(2)", { attr: { offset: "0.15" } }, 0);
 sun.to("#bg_grad stop:nth-child(3)", { attr: { offset: "0.18" } }, 0);
 sun.to("#bg_grad stop:nth-child(4)", { attr: { offset: "0.25" } }, 0);
@@ -126,7 +125,6 @@ gsap.fromTo(
     {
         y: 20,
         scale: 0.8,
-        //transformOrigin: "50% 50%",
         ease: "power3.out",
         scrollTrigger: {
             trigger: ".scrollElement",
@@ -208,7 +206,6 @@ scene3.fromTo("#stars", { opacity: 0 }, { opacity: 0.5, y: -500 }, 0);
 // Scroll Back text
 scene3.fromTo("#text2", { opacity: 0 }, { opacity: 0.7, y: -710 }, 0.3);
 
-
 //gradient value change
 scene3.to("#bg2-grad", { attr: { cy: 600 } }, 0);
 scene3.to("#bg2-grad", { attr: { r: 500 } }, 0);
@@ -238,6 +235,7 @@ gsap.utils.toArray("#stars path").forEach((star, i) => {
   );
 });
 
+
 //reset scrollbar position after refresh
 window.onbeforeunload = function () {
     window.scrollTo(0, 0);
@@ -246,11 +244,333 @@ window.onbeforeunload = function () {
 function screenToSVG(svg, x, y) {
      var pt = svg.createSVGPoint();
      pt.x = x;
-    pt.y = y;
-    var cursorPt = pt.matrixTransform(svg.getScreenCTM().inverse());
-    return { x: Math.floor(cursorPt.x), y: Math.floor(cursorPt.y) }
- }
+     pt.y = y;
+     var cursorPt = pt.matrixTransform(svg.getScreenCTM().inverse());
+     return { x: Math.floor(cursorPt.x), y: Math.floor(cursorPt.y) }
+}
 
-(function() {
+/* Pixelated Works Popup Interaction */
+document.addEventListener('DOMContentLoaded', function() {
+  // Add keyframe animations dynamically
+  const styleElement = document.createElement('style');
+  styleElement.textContent = `
+    @keyframes scanlines {
+      0% { background-position: 0 0; }
+      100% { background-position: 0 6px; }
+    }
+    
+    @keyframes crt-flicker {
+      0% { opacity: 0.97; }
+      5% { opacity: 0.93; }
+      10% { opacity: 0.95; }
+      15% { opacity: 0.94; }
+      20% { opacity: 0.92; }
+      25% { opacity: 0.95; }
+      30% { opacity: 0.93; }
+      35% { opacity: 0.95; }
+      40% { opacity: 0.97; }
+      45% { opacity: 0.94; }
+      50% { opacity: 0.95; }
+      55% { opacity: 0.95; }
+      60% { opacity: 0.94; }
+      65% { opacity: 0.93; }
+      70% { opacity: 0.95; }
+      75% { opacity: 0.93; }
+      80% { opacity: 0.94; }
+      85% { opacity: 0.95; }
+      90% { opacity: 0.94; }
+      95% { opacity: 0.92; }
+      100% { opacity: 0.97; }
+    }
+    
+    @keyframes paper-flip {
+      0% { transform: rotateY(90deg) scale(0.7); opacity: 0; }
+      50% { transform: rotateY(15deg) scale(1.05); opacity: 0.9; }
+      100% { transform: rotateY(0) scale(1); opacity: 1; }
+    }
+    
+    @keyframes paper-fold {
+      0% { transform: rotateY(0) scale(1); opacity: 1; }
+      50% { transform: rotateY(15deg) scale(0.95); opacity: 0.9; }
+      100% { transform: rotateY(90deg) scale(0.7); opacity: 0; }
+    }
+  `;
+  document.head.appendChild(styleElement);
 
-})();
+  const worksButton = document.querySelector('.btn_works');
+  const worksPopup = document.getElementById('worksPopup');
+  const closeButton = document.querySelector('.window-control.close');
+  let isPopupVisible = false;
+  let isStickyOpen = false;
+
+  // Preload the pixel font to prevent flickering
+  if (!document.querySelector('link[href*="Press+Start+2P"]')) {
+    const preloadLink = document.createElement('link');
+    preloadLink.rel = 'preload';
+    preloadLink.href = 'https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap';
+    preloadLink.as = 'style';
+    preloadLink.onload = function() {
+      this.onload = null;
+      this.rel = 'stylesheet';
+    };
+    document.head.appendChild(preloadLink);
+    
+    // Fallback for browsers that don't support preload
+    const styleLink = document.createElement('link');
+    styleLink.rel = 'stylesheet';
+    styleLink.href = 'https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap';
+    document.head.appendChild(styleLink);
+  }
+
+  // Position popup above button function with perfect alignment
+  function positionPopup() {
+    if (!worksButton) return;
+    
+    const buttonRect = worksButton.getBoundingClientRect();
+    const popupWidth = 380;
+    const viewportWidth = window.innerWidth;
+    
+    // Calculate position relative to button - centered on button
+    let leftPosition = buttonRect.left + (buttonRect.width / 2) - (popupWidth / 2);
+    // Ensure the popup doesn't overflow the left edge
+    leftPosition = Math.max(leftPosition, 10);
+    // Ensure the popup doesn't overflow the right edge
+    leftPosition = Math.min(leftPosition, viewportWidth - popupWidth - 10);
+    
+    // Apply the position
+    worksPopup.style.left = leftPosition + 'px';
+    worksPopup.style.transform = 'scale(0.95)';
+    
+    // Set bottom position - perfect alignment with top of button
+    const bottomOffset = window.innerHeight - buttonRect.top + 5;
+    worksPopup.style.bottom = bottomOffset + 'px';
+    
+    // Create a subtle connection between popup and button
+    if (isPopupVisible && typeof gsap !== 'undefined') {
+      gsap.set('.btn_works', { boxShadow: '0 -25px 32px -15px rgba(255, 145, 113, 0.4)' });
+    } else {
+      gsap.set('.btn_works', { clearProps: 'boxShadow' });
+    }
+  }
+
+  // Load GSAP if not already available
+  if (typeof gsap === 'undefined') {
+    const script = document.createElement('script');
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js';
+    script.onload = initAnimations;
+    document.head.appendChild(script);
+  } else {
+    initAnimations();
+  }
+  
+  function initAnimations() {
+    // Initial positioning
+    positionPopup();
+    
+    // Add subtle animations to projects when popup opens
+    const projects = worksPopup.querySelectorAll('.project');
+    projects.forEach((project, index) => {
+      gsap.set(project, { opacity: 0, y: 20 });
+    });
+    
+    // Update position on scroll and resize with debouncing
+    let scrollTimeout, resizeTimeout;
+    window.addEventListener('scroll', function() {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(positionPopup, 10);
+    });
+    window.addEventListener('resize', function() {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(positionPopup, 50);
+    });
+    
+    // Setup popup click functionality
+    worksButton.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      if (!isPopupVisible) {
+        showPopup(true); // Show popup and make it sticky
+      } else if (isStickyOpen) {
+        hidePopup(); // Hide popup if already sticky
+      } else {
+        // Make non-sticky popup sticky
+        isStickyOpen = true;
+        worksPopup.classList.add('sticky-open');
+      }
+    });
+
+    // Handle hover interaction 
+    worksButton.addEventListener('mouseenter', function() {
+      if (!isStickyOpen) {
+        showPopup(false);
+      }
+    });
+
+    worksButton.addEventListener('mouseleave', function() {
+      if (!isStickyOpen && isPopupVisible) {
+        setTimeout(() => {
+          // Small delay to check if user moved to the popup
+          if (!isStickyOpen && isPopupVisible && !worksPopup.matches(':hover')) {
+            hidePopup();
+          }
+        }, 200);
+      }
+    });
+
+    worksPopup.addEventListener('mouseenter', function() {
+      if (isPopupVisible && !isStickyOpen) {
+        // Keep open while hovering
+      }
+    });
+
+    worksPopup.addEventListener('mouseleave', function() {
+      if (isPopupVisible && !isStickyOpen) {
+        setTimeout(() => hidePopup(), 300);
+      }
+    });
+
+    // Close button interaction
+    closeButton.addEventListener('click', function() {
+      hidePopup();
+    });
+
+    // Add smooth scroll momentum to popup content
+    const popupContent = worksPopup.querySelector('.works-popup-content');
+    if (popupContent) {
+      popupContent.addEventListener('scroll', () => {
+        // Prevent scroll jank
+        if (typeof gsap !== 'undefined') {
+          gsap.ticker.lagSmoothing(0);
+        }
+      });
+    }
+
+    // Keyboard accessibility
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && isPopupVisible) {
+        hidePopup();
+      }
+      
+      if (e.key === 'Tab' && isPopupVisible) {
+        const focusableElements = worksPopup.querySelectorAll('a, button, [tabindex="0"]');
+        if (focusableElements.length > 0) {
+          e.preventDefault();
+          focusableElements[0].focus();
+        }
+      }
+    });
+
+    // Click outside to close
+    document.addEventListener('click', function(e) {
+      if (isPopupVisible && !worksPopup.contains(e.target) && e.target !== worksButton) {
+        hidePopup();
+      }
+    });
+  }
+  
+  // Toggle popup visibility with animations
+  function showPopup(makeSticky) {
+    // Make popup visible
+    worksPopup.style.visibility = 'visible';
+    worksPopup.style.pointerEvents = 'auto';
+    
+    // Apply sticky class if needed
+    if (makeSticky) {
+      isStickyOpen = true;
+      worksPopup.classList.add('sticky-open');
+    } else {
+      worksPopup.classList.remove('sticky-open');
+    }
+    
+    isPopupVisible = true;
+    
+    // Apply positioning
+    positionPopup();
+    
+    // Use GSAP for smoother animations if available
+    if (typeof gsap !== 'undefined') {
+      // Animated opening effect
+      gsap.fromTo(worksPopup, 
+        {opacity: 0, rotationY: 20, transformOrigin: "50% 50% -50px", scale: 0.95},
+        {opacity: 1, rotationY: 0, scale: 1, duration: 0.4, ease: "back.out(1.5)"}
+      );
+      
+      // Staggered reveal for each project
+      const projects = worksPopup.querySelectorAll('.project');
+      gsap.to(projects, {
+        opacity: 1, 
+        y: 0, 
+        duration: 0.4,
+        stagger: 0.1,
+        delay: 0.2,
+        ease: "power3.out"
+      });
+      
+      // Add subtle light flare animation to popup
+      gsap.fromTo(worksPopup, 
+        {backgroundPosition: "0% 50%"},
+        {backgroundPosition: "100% 50%", duration: 2, ease: "sine.inOut", repeat: -1, yoyo: true}
+      );
+    } else {
+      // Fallback to CSS transitions
+      worksPopup.classList.add('active');
+      
+      // Add animation class for projects
+      const projects = worksPopup.querySelectorAll('.project');
+      projects.forEach((project, i) => {
+        setTimeout(() => {
+          project.style.opacity = 1;
+          project.style.transform = 'translateY(0)';
+        }, 100 + (i * 100));
+      });
+    }
+  }
+  
+  function hidePopup() {
+    // Remove sticky state
+    isStickyOpen = false;
+    worksPopup.classList.remove('sticky-open');
+    
+    // Use GSAP for smoother animations if available
+    if (typeof gsap !== 'undefined') {
+      // Animate projects out first
+      const projects = worksPopup.querySelectorAll('.project');
+      gsap.to(projects, {
+        opacity: 0,
+        y: -10,
+        duration: 0.2,
+        stagger: 0.05,
+        ease: "power2.in"
+      });
+      
+      // Then collapse the popup
+      gsap.to(worksPopup, {
+        opacity: 0, 
+        rotationY: 15,
+        transformOrigin: "50% 50% -50px",
+        scale: 0.95,
+        duration: 0.3, 
+        ease: "power2.in",
+        delay: 0.1,
+        onComplete: () => {
+          worksPopup.style.visibility = 'hidden';
+          worksPopup.style.pointerEvents = 'none';
+          isPopupVisible = false;
+          
+          // Clear the button shadow effect
+          gsap.set('.btn_works', { clearProps: 'boxShadow' });
+        }
+      });
+    } else {
+      // Fallback to CSS transitions
+      worksPopup.classList.remove('active');
+      // Need to use setTimeout for the visibility to change after animation completes
+      setTimeout(() => {
+        worksPopup.style.visibility = 'hidden';
+        worksPopup.style.pointerEvents = 'none';
+        isPopupVisible = false;
+      }, 250); // Match the transition duration
+    }
+  }
+});

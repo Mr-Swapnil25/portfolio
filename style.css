@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap&font-display=block');
+
 body {
     margin: 0;
     padding: 0;
@@ -6,6 +8,8 @@ body {
     image-rendering: pixelated;
     image-rendering: crisp-edges;
     /* Use an 80x80 px PNG for the arrow cursor */
+    background-color: #45224A;
+    color: #F5E9DA;
 }
 
 .wrapper {
@@ -35,28 +39,119 @@ svg {
     bottom: 5%;
     right: 0px;
     transform: translateX(-50%);
-    border: 1.5px solid #fff;
-    border-radius: 8px;
+    border: 2.5px solid #6C7A89;
+    border-radius: 10px;
     font-size: 1.0rem;
     padding: 0.7rem 1.4em;
-    background-color: transparent;
-    color: #ffffff;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    background: rgba(69, 34, 74, 0.85);
+    color: #F5E9DA;
+    font-family: 'Press Start 2P';
     -webkit-font-smoothing: antialiased;
     cursor: pointer;
-    transition: all .3s;
+    transition: background 0.3s, color 0.3s, box-shadow 0.3s, border-color 0.3s;
     z-index: 11;
+    text-decoration: none;
+    box-shadow: 0 0 12px 2px #6C7A89, 0 0 32px 4px #6C7A8933;
+    overflow: hidden;
+    
+    /* For scanline overlay */
+}
+
+.btn::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    border-radius: 8px;
+    background: repeating-linear-gradient(
+        to bottom,
+        rgba(245, 233, 218, 0.078) 0px,
+        rgba(245, 233, 218, 0.08) 2px,
+        transparent 2px,
+        transparent 6px
+    );
+    z-index: 2;
+    animation: scanlines 1.2s linear infinite;
+}
+
+@keyframes scanlines {
+    0% { background-position-y: 0; }
+    100% { background-position-y: 8px; }
+}
+
+.btn::after {
+    content: "";
+    position: absolute;
+    top: -40%; left: -40%;
+    width: 180%; height: 180%;
+    pointer-events: none;
+    border-radius: 40%;
+    background: radial-gradient(circle,#45224A 0%, transparent 60%);
+    opacity: 0.18;
+    filter: blur(8px);
+    z-index: 1;
+    animation: neon-glow 2.5s linear infinite alternate;
+}
+
+@keyframes neon-glow {
+    0% { opacity: 0.12; filter: blur(8px); }
+    100% { opacity: 0.22; filter: blur(16px); }
+}
+
+.btn:hover, .btn:focus {
+    background: linear-gradient(120deg, #DCA1A1, #DEA193, #E7E8D1, #DEA193, #DCA1A1);
+    background-size: 400% 100%;
+    animation: gradient-shift 1.5s ease-in-out infinite alternate;
+    color: #45224A;
+    box-shadow: 0 0 32px 8px #FF9171, 0 0 64px 16px #FF917155;
+    border: 2px solid #E7E8D1;
+    outline: 1px solid #E7E8D1;
+}
+
+@keyframes gradient-shift {
+    0% {
+        background-position: 0% 50%;
+    }
+    25% {
+        background-position: 25% 50%;
+    }
+    50% {
+        background-position: 50% 50%;
+    }
+    75% {
+        background-position: 75% 50%;
+    }
+    100% {
+        background-position: 100% 50%;
+    }
+}
+
+.btn:active {
+    background: linear-gradient(120deg, #DCA1A1, #DEA193, #E7E8D1, #DEA193, #DCA1A1);
+    background-size: 400% 100%;
+    background-position: 50% 50%;
+    animation-play-state: paused;
+    color: #45224A;
+    box-shadow: 0 0 16px 4px #FF9171, 0 0 32px 8px #FF917155;
+}
+
+
+
+
+
+
+/* Ensure .btn remains accessible and responsive */
+@media (max-width: 600px) {
+    .btn {
+        font-size: 0.95rem;
+        padding: 0.6rem 1.1em;
+    }
 }
 
 .btn_works {
-    left: 100px;
+    left: 150px;
     right: unset;
     text-decoration: none;
-}
-
-.btn:hover {
-    background: #ffffff;
-    color: #1B1734;
 }
 
 /* MARK: ---0-490 Mobile */
@@ -90,10 +185,538 @@ a,
 /* Move LinkedIn button slightly left */
 .btn.btn_version {
     right: 0px !important;
+    text-decoration: none;
 }
 
 @media (max-width: 600px) {
     .btn.btn_version {
         right: 60px !important;
+    }
+}
+
+/* GitHub button: match LinkedIn style, align, and add spacing */
+.btn.btn_github {
+    right: 180px !important;
+    margin-right: 1.5rem;
+    text-decoration: none;
+}
+
+@media (max-width: 600px) {
+    .btn.btn_github {
+        right: 180px !important;
+    }
+}
+
+/* Hide scrollbar globally but keep scrolling functional */
+html, body {
+    /* For IE, Edge */
+    -ms-overflow-style: none;
+    /* For Firefox */
+    scrollbar-width: none;
+    background-color: #45224A;
+    color: #F5E9DA;
+}
+html::-webkit-scrollbar, body::-webkit-scrollbar {
+    display: none;
+}
+
+/* Custom Works Popup Styles */
+.works-popup {
+    position: fixed;
+    z-index: 100;
+    /* Centered horizontally by default with margin */
+    left: calc(50% - 190px);
+    transform: scale(0.95);
+    bottom: calc(5% + 55px);
+    width: 380px;
+    max-width: 90vw;
+    opacity: 0;
+    visibility: hidden;
+    transition: 
+        transform 0.35s cubic-bezier(0.18, 1.25, 0.40, 1), 
+        opacity 0.3s cubic-bezier(0.22, 1, 0.36, 1), 
+        visibility 0s 0.3s;
+    pointer-events: none;
+    box-shadow: 0 0 32px 8px rgba(255, 145, 113, 0.7), 0 0 64px 16px rgba(255, 145, 113, 0.35);
+    border: 4px double #E7E8D1;
+    outline: 2px solid #45224A;
+    overflow: hidden;
+    background: linear-gradient(120deg, #DCA1A1, #DEA193, #E7E8D1, #DEA193, #DCA1A1);
+    background-size: 400% 100%;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    max-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Press Start 2P', 'Courier New', monospace;
+    color: #45224A;
+    letter-spacing: -0.5px;
+    text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.3);
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+    contain: layout style;
+    filter: sepia(0.15) contrast(1.05) brightness(1.02);
+    /* Fix for left edge overflow */
+    min-width: auto;
+    right: auto;
+}
+
+.works-popup.active,
+.btn_works:hover ~ .works-popup,
+.btn_works:focus ~ .works-popup,
+.works-popup:hover,
+.works-popup:focus-within {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+    pointer-events: auto;
+    transition: 
+        transform 0.35s cubic-bezier(0.18, 1.25, 0.40, 1), 
+        opacity 0.3s cubic-bezier(0.22, 1, 0.36, 1), 
+        visibility 0s 0s;
+    /* Position adjustment */
+    left: max(calc(50% - 190px), 10px);
+}
+
+.works-popup.sticky-open {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+    pointer-events: auto;
+    animation: subtle-float 3s ease-in-out infinite alternate;
+    /* Position adjustment */
+    left: max(calc(50% - 190px), 10px);
+}
+
+@keyframes subtle-float {
+    0%, 100% { 
+        transform: scale(1);
+    }
+    50% { 
+        transform: scale(1.005) translateY(-2px); 
+    }
+}
+
+/* Fixed noise overlay positioning */
+.works-popup::after {
+    content: "";
+    position: absolute;
+    top: 0; 
+    left: 0; /* Changed from left:15 (missing unit) */
+    right: 0; 
+    bottom: 0;
+    background-image: 
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"),
+        repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.2) 0 2px, transparent 2px 4px),
+        repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0.15) 0 2px, transparent 2px 4px);
+    background-size: 100px 100px, 8px 8px, 8px 8px;
+    pointer-events: none;
+    opacity: 0.4;
+    mix-blend-mode: overlay;
+    z-index: 102;
+}
+
+/* Vignette effect fix */
+.works-popup::before {
+    content: "";
+    position: absolute;
+    top: 0; 
+    left: 0; 
+    right: 0; 
+    bottom: 0;
+    pointer-events: none;
+    background: radial-gradient(ellipse at center, transparent 50%, rgba(69, 34, 74, 0.3) 100%);
+    z-index: 101;
+}
+
+
+.works-popup-header {
+    padding: 8px 8px 8px 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 4px double #E7E8D1;
+    position: relative;
+    height: 36px;
+    box-sizing: border-box;
+    background-color: #45224A;
+    color: #F5E9DA;
+}
+
+/* Add paperclip icon to header using CSS only */
+.works-popup-header::before {
+    content: '';
+    width: 14px;
+    height: 22px;
+    background-color: #F5E9DA;
+    position: absolute;
+    top: -8px;
+    right: 50px;
+    transform: rotate(25deg);
+    clip-path: polygon(
+        0% 10%, 40% 10%, 40% 0%, 60% 0%, 60% 10%, 100% 10%, 
+        100% 25%, 85% 25%, 85% 100%, 65% 100%, 65% 25%, 
+        35% 25%, 35% 100%, 15% 100%, 15% 25%, 0% 25%
+    );
+    z-index: 3;
+}
+
+/* Title bar drag handle */
+.title-drag-handle {
+    display: flex;
+    margin-right: auto;
+    gap: 2px;
+    padding-left: 4px;
+}
+
+.drag-dot {
+    width: 4px;
+    height: 4px;
+    background-color: #F5E9DA;
+    margin: 0 2px;
+}
+
+/* Folder icon */
+.folder-icon {
+    width: 14px;
+    height: 12px;
+    margin-right: 8px;
+    position: relative;
+    display: inline-block;
+}
+
+.folder-icon::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 14px;
+    height: 12px;
+    background-color: #F5E9DA;
+    clip-path: polygon(
+        0% 25%, 35% 25%, 40% 0%, 100% 0%, 
+        100% 100%, 0% 100%
+    );
+}
+
+.window-title {
+    font-size: 10px;
+    text-shadow: 1px 1px 0px #45224A;
+    color: #F5E9DA;
+    margin-right: auto;
+    white-space: nowrap;
+    letter-spacing: 0;
+    padding-left: 4px;
+}
+
+.window-control {
+    width: 14px;
+    height: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Press Start 2P', 'Courier New', monospace;
+    font-size: 10px;
+    font-weight: bold;
+    cursor: url('assets/pixelated-hand-cursor.png') 20 0, pointer !important;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    color: #FFFFFF;
+    background-color: #E74C3C;
+    border: 2px solid #F5E9DA;
+    line-height: 1.5;
+    margin-left: auto;
+    text-align: center;
+    position: relative;
+    top: 0;
+    transform-origin: center;
+    border-radius: 0;
+    padding-bottom: 2px;
+    /* Smooth hover transition */
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), 
+                background-color 0.2s ease,
+                box-shadow 0.2s ease;
+}
+
+.window-control.close:hover {
+    background-color: #FF4136;
+    transform: scale(1.1);
+    box-shadow: 0 0 10px 2px rgba(255, 145, 113, 0.5);
+}
+
+/* Works popup content with torn paper edge */
+.works-popup-content {
+    padding: 15px;
+    background: #f7ecd2;
+    overflow-y: auto;
+    overflow-x: hidden;
+    flex: 1;
+    max-height: calc(60vh - 36px);
+    scrollbar-width: thick;
+    scrollbar-color: #45224A #F5E9DA;
+    border-left: 2px solid #F5E9DA;
+    border-right: 2px solid #F5E9DA;
+    border-bottom: 2px solid #F5E9DA;
+    /* Realistic old diary paper: yellowed, faded, ruled lines, faint shadow, irregular torn edge */
+    background-image:
+        repeating-linear-gradient(to bottom, rgba(180, 140, 90, 0.08) 0 2px, transparent 2px 32px), /* ruled lines */
+        repeating-linear-gradient(to right, rgba(220, 161, 161, 0.06) 0 1px, transparent 1px 20px),
+        repeating-linear-gradient(to bottom, rgba(220, 161, 161, 0.05) 0 1px, transparent 1px 20px),
+        radial-gradient(ellipse at 60% 40%, rgba(220, 161, 161, 0.08) 0%, transparent 70%),
+        radial-gradient(ellipse at 30% 70%, rgba(220, 161, 161, 0.06) 0%, transparent 80%),
+        radial-gradient(circle at 50% 50%, rgba(255,255,255,0.18) 0%, rgba(220, 161, 161, 0.03) 60%, transparent 100%);
+    background-size: 100% 32px, 20px 20px, 20px 20px, 300px 200px, 250px 180px, 100% 100%;
+    background-color: #f7ecd2;
+    position: relative;
+    font-family: 'Courier New', monospace;
+    /* More irregular torn paper edge */
+    clip-path: polygon(
+        0% 0%, 100% 0%, 100% 95%,
+        98% 97%, 96% 93%, 94% 98%, 92% 94%,
+        90% 97%, 88% 93%, 86% 98%, 84% 94%,
+        82% 97%, 80% 93%, 78% 98%, 76% 94%,
+        74% 97%, 72% 93%, 70% 98%, 68% 94%,
+        66% 97%, 64% 93%, 62% 98%, 60% 94%,
+        58% 97%, 56% 93%, 54% 98%, 52% 94%,
+        50% 97%, 48% 93%, 46% 98%, 44% 94%,
+        42% 97%, 40% 93%, 38% 98%, 36% 94%,
+        34% 97%, 32% 93%, 30% 98%, 28% 94%,
+        26% 97%, 24% 93%, 22% 98%, 20% 94%,
+        18% 97%, 16% 93%, 14% 98%, 12% 94%,
+        10% 97%, 8% 93%, 6% 98%, 4% 94%,
+        2% 97%, 0% 95%
+    );
+    box-shadow: 0 2px 18px 0 rgba(120, 80, 40, 0.13) inset;
+}
+
+/* Enhanced Coffee Stain */
+.works-popup-content::after {
+    content: "";
+    position: absolute;
+    top: 12%;
+    left: 60%;
+    width: 80px;
+    height: 80px;
+    background: radial-gradient(ellipse at 60% 40%, rgba(160, 82, 45, 0.13) 0%, rgba(160, 82, 45, 0.09) 60%, rgba(160, 82, 45, 0) 80%),
+                radial-gradient(ellipse at 30% 70%, rgba(160, 82, 45, 0.08) 0%, rgba(160, 82, 45, 0) 70%);
+    border-radius: 50%;
+    pointer-events: none;
+    transform: rotate(12deg) scale(1.1, 0.7);
+    z-index: 1;
+    mix-blend-mode: multiply;
+    opacity: 0.7;
+}
+
+/* Add a second, smaller stain for realism */
+.works-popup-content::before {
+    content: "";
+    position: absolute;
+    top: 60%;
+    left: 20%;
+    width: 38px;
+    height: 38px;
+    background: radial-gradient(ellipse at 60% 40%, rgba(160, 82, 45, 0.09) 0%, rgba(160, 82, 45, 0) 80%);
+    border-radius: 50%;
+    pointer-events: none;
+    transform: rotate(-8deg) scale(1, 0.7);
+    z-index: 1;
+    mix-blend-mode: multiply;
+    opacity: 0.5;
+}
+
+/* Custom scrollbar for the popup content */
+.works-popup-content::-webkit-scrollbar {
+    width: 16px;
+    background-color: #F5E9DA;
+    border-left: 2px solid #45224A;
+}
+
+.works-popup-content::-webkit-scrollbar-track {
+    background-color: #F5E9DA;
+    border-left: 2px solid #45224A;
+    box-shadow: inset 0 0 0 2px #F5E9DA;
+}
+
+.works-popup-content::-webkit-scrollbar-thumb {
+    background-color: #45224A;
+    border: 2px dashed #F5E9DA;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+}
+
+.works-popup-content::-webkit-scrollbar-button {
+    display: block;
+    height: 12px;
+    background-color: #45224A;
+    border: 2px dashed #F5E9DA;
+    image-rendering: pixelated;
+}
+
+.works-popup-content::-webkit-scrollbar-button:vertical:decrement {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23F5E9DA' stroke-width='4' stroke-linecap='square' stroke-linejoin='arcs'%3E%3Cpath d='M18 15l-6-6-6 6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 10px;
+}
+
+.works-popup-content::-webkit-scrollbar-button:vertical:increment {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23F5E9DA' stroke-width='4' stroke-linecap='square' stroke-linejoin='arcs'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 10px;
+}
+
+.project-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Enhanced polaroid-style project styling */
+.project {
+    border-bottom: 0;
+    padding: 0 0 20px 0;
+    font-size: 10px;
+    line-height: 1.5;
+    position: relative;
+    background: white;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.08);
+    transform: rotate(-1deg);
+    padding: 8px 8px 20px 8px;
+    transition: transform 0.2s ease-out;
+}
+
+.project:nth-child(2n) {
+    transform: rotate(1deg);
+}
+
+.project:nth-child(3n) {
+    transform: rotate(-0.5deg);
+}
+
+.project:hover {
+    transform: rotate(0) scale(1.03);
+    z-index: 5;
+}
+
+.project:last-child {
+    margin-bottom: 10px;
+}
+
+.project::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        linear-gradient(to right, rgba(0,0,0,0.02) 0px, transparent 1px) 0 0 / 20px 20px,
+        linear-gradient(to bottom, rgba(0,0,0,0.02) 0px, transparent 1px) 0 0 / 20px 20px;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.project::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: -5px;
+    width: 20%;
+    height: 10px;
+    background: rgba(69, 34, 74, 0.1);
+    transform: translateX(-50%);
+    clip-path: polygon(0% 100%, 20% 0%, 80% 0%, 100% 100%);
+}
+
+.project-name {
+    margin: 0 0 8px;
+    color: #45224A;
+    font-size: 10px;
+    font-weight: 400;
+    font-family: 'Press Start 2P', 'Courier New', monospace;
+    letter-spacing: -0.5px;
+    padding: 4px 0;
+    border-left: 8px dotted #45224A;
+    padding-left: 8px;
+    position: relative;
+}
+
+.project-desc {
+    margin: 0 0 12px;
+    color: #45224A;
+    line-height: 1.5;
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    padding-left: 8px;
+    font-weight: 300;
+    border-left: 2px dotted #DCA1A1;
+    font-style: italic;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.08);
+}
+
+.project-links {
+    font-size: 12px;
+    color: #45224A;
+    padding-left: 16px;
+    font-weight: 400;
+    background: repeating-linear-gradient(
+        45deg,
+        rgba(220, 161, 161, 0.2),
+        rgba(220, 161, 161, 0.2) 4px,
+        transparent 4px,
+        transparent 8px
+    );
+    padding: 5px 5px;
+    clip-path: polygon(
+        0% 0%, 
+        calc(100% - 5px) 0%, 
+        100% 5px, 
+        100% 100%, 
+        0% 100%
+    );
+}
+
+.project-links a {
+    color: #6C7A89;
+    text-decoration: none;
+    border-bottom: 2px dotted transparent;
+    transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    cursor: url('assets/pixelated-hand-cursor.png') 20 0, pointer !important;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    padding: 2px 4px;
+    display: inline-block;
+    margin-right: 4px;
+    background-color: rgba(245, 233, 218, 0.7);
+}
+
+.link-separator {
+    display: inline-block;
+    color: #45224A;
+    margin: 0 8px 0 4px;
+    font-size: 12px;
+    font-weight: 600;
+    opacity: 0.7;
+    position: relative;
+    top: -1px;
+}
+
+.project-links a:hover {
+    color: #45224A;
+    border-bottom: 2px dotted #45224A;
+    background-color: rgba(255, 145, 113, 0.2);
+    transform: translateY(-1px);
+}
+
+/* Media query adjustments for mobile */
+@media (max-width: 600px) {
+    .works-popup {
+        bottom: calc(5% + 50px);
+        width: 90vw;
+    }
+    
+    .project-name, .project-desc, .project-links {
+        font-size: 8px;
     }
 }
