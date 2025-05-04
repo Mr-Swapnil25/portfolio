@@ -184,7 +184,7 @@ a,
 
 /* Move LinkedIn button slightly left */
 .btn.btn_version {
-    right: 0px !important;
+    right: 70px !important;
     text-decoration: none;
 }
 
@@ -196,7 +196,7 @@ a,
 
 /* GitHub button: match LinkedIn style, align, and add spacing */
 .btn.btn_github {
-    right: 180px !important;
+    right: 260px !important;
     margin-right: 1.5rem;
     text-decoration: none;
 }
@@ -526,45 +526,165 @@ html::-webkit-scrollbar, body::-webkit-scrollbar {
 
 /* Custom scrollbar for the popup content */
 .works-popup-content::-webkit-scrollbar {
-    width: 16px;
-    background-color: #F5E9DA;
-    border-left: 2px solid #45224A;
+    width: 24px;
+    background: linear-gradient(to right, 
+        #F5E9DA 0%, 
+        #E7E8D1 20%, 
+        #F5E9DA 50%, 
+        #E7E8D1 80%, 
+        #F5E9DA 100%
+    );
+    border-left: 5px double #45224A;
+    border-right: 3px dashed #DCA1A1;
+    box-shadow: inset 0 0 8px rgba(69, 34, 74, 0.4);
+    image-rendering: pixelated;
+    cursor: url('assets/pixelated-hand-cursor.png') 20 0, pointer !important;
 }
 
 .works-popup-content::-webkit-scrollbar-track {
-    background-color: #F5E9DA;
-    border-left: 2px solid #45224A;
-    box-shadow: inset 0 0 0 2px #F5E9DA;
+    background: repeating-linear-gradient(
+        135deg, 
+        #F5E9DA 0px 6px, 
+        #E7E8D1 6px 12px,
+        #F5E9DA 12px 18px,
+        #E7E8D1 18px 24px
+    );
+    border-left: 5px double #45224A;
+    border-right: 3px dashed #DCA1A1;
+    box-shadow: 
+        inset 0 0 10px rgba(222, 161, 147, 0.5),
+        inset 0 0 20px rgba(245, 233, 218, 0.3);
+    image-rendering: pixelated;
 }
 
 .works-popup-content::-webkit-scrollbar-thumb {
-    background-color: #45224A;
-    border: 2px dashed #F5E9DA;
+    background: repeating-linear-gradient(
+        45deg, 
+        #DEA193 0px 8px, 
+        #DCA1A1 8px 16px
+    );
+    background-image: 
+        repeating-linear-gradient(
+            45deg, 
+            #DEA193 0px 8px, 
+            #DCA1A1 8px 16px
+        ),
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.1'/%3E%3C/svg%3E");
+    border: 4px double #45224A;
+    border-radius: 0;
+    box-shadow: 
+        3px 3px 0 rgba(69, 34, 74, 0.4), 
+        inset 0 0 8px rgba(69, 34, 74, 0.5);
     image-rendering: pixelated;
-    image-rendering: crisp-edges;
+    min-height: 50px;
+    cursor: url('assets/pixelated-hand-cursor.png') 20 0, pointer !important;
+}
+
+.works-popup-content::-webkit-scrollbar-thumb:hover {
+    background: repeating-linear-gradient(
+        45deg, 
+        #45224A 0px 8px, 
+        #DCA1A1 8px 16px
+    );
+    border: 4px double #F5E9DA;
+    box-shadow: 
+        3px 3px 0 rgba(69, 34, 74, 0.5), 
+        inset 0 0 10px rgba(222, 161, 147, 0.6);
 }
 
 .works-popup-content::-webkit-scrollbar-button {
     display: block;
-    height: 12px;
-    background-color: #45224A;
-    border: 2px dashed #F5E9DA;
+    height: 24px;
+    background: linear-gradient(
+        to bottom,
+        #45224A 0%,
+        #3A1D3F 50%,
+        #45224A 100%
+    );
+    border: 3px dashed #F5E9DA;
     image-rendering: pixelated;
+    box-shadow: 
+        2px 2px 0 #E7E8D1,
+        inset 3px 3px 0px rgba(220, 161, 161, 0.5),
+        inset -3px -3px 0px rgba(69, 34, 74, 0.5);
 }
 
 .works-popup-content::-webkit-scrollbar-button:vertical:decrement {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23F5E9DA' stroke-width='4' stroke-linecap='square' stroke-linejoin='arcs'%3E%3Cpath d='M18 15l-6-6-6 6'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 10px;
+    background: repeating-linear-gradient(
+        to right,
+        #45224A 0px 5px,
+        #DCA1A1 5px 10px
+    );
+    background-clip: padding-box;
+    padding: 5px;
+    position: relative;
+}
+
+.works-popup-content::-webkit-scrollbar-button:vertical:decrement::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -25%);
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 12px solid #F5E9DA;
+    filter: drop-shadow(0 1px 1px rgba(69, 34, 74, 0.6));
 }
 
 .works-popup-content::-webkit-scrollbar-button:vertical:increment {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23F5E9DA' stroke-width='4' stroke-linecap='square' stroke-linejoin='arcs'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 10px;
+    background: repeating-linear-gradient(
+        to right,
+        #45224A 0px 5px,
+        #DCA1A1 5px 10px
+    );
+    background-clip: padding-box;
+    padding: 5px;
+    position: relative;
 }
+
+.works-popup-content::-webkit-scrollbar-button:vertical:increment::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -75%);
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 12px solid #F5E9DA;
+    filter: drop-shadow(0 1px 1px rgba(69, 34, 74, 0.6));
+}
+
+/* Firefox support for scrollbar */
+.works-popup-content {
+    scrollbar-color: #45224A #F5E9DA;
+    scrollbar-width: thick;
+    background-image: 
+        repeating-linear-gradient(
+            45deg,
+            rgba(220, 161, 161, 0.1) 0px,
+            rgba(220, 161, 161, 0.1) 3px,
+            rgba(245, 233, 218, 0.1) 3px,
+            rgba(245, 233, 218, 0.1) 6px
+        ),
+        repeating-linear-gradient(
+            -45deg,
+            rgba(245, 233, 218, 0.05) 0px,
+            rgba(245, 233, 218, 0.05) 5px,
+            rgba(222, 161, 147, 0.05) 5px,
+            rgba(222, 161, 147, 0.05) 10px
+        ),
+        radial-gradient(
+            circle at 70% 20%,
+            rgba(231, 232, 209, 0.2) 0%,
+            rgba(231, 232, 209, 0) 60%
+        );
+}
+
 
 .project-list {
     display: flex;
@@ -649,7 +769,7 @@ html::-webkit-scrollbar, body::-webkit-scrollbar {
     font-family: 'Courier New', monospace;
     font-size: 10px;
     padding-left: 8px;
-    font-weight: 300;
+    font-weight: 600;
     border-left: 2px dotted #DCA1A1;
     font-style: italic;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.08);
@@ -659,7 +779,7 @@ html::-webkit-scrollbar, body::-webkit-scrollbar {
     font-size: 12px;
     color: #45224A;
     padding-left: 16px;
-    font-weight: 400;
+    font-weight: 700;
     background: repeating-linear-gradient(
         45deg,
         rgba(220, 161, 161, 0.2),
@@ -718,5 +838,127 @@ html::-webkit-scrollbar, body::-webkit-scrollbar {
     
     .project-name, .project-desc, .project-links {
         font-size: 8px;
+    }
+}
+
+/* Character Sprite Animation */
+.character-sprite {
+    position: fixed;
+    right: 0 !important;
+    bottom: 14%; /* Maintained the same vertical alignment */
+    width: 40px;
+    height: 40px;
+    background-image: url('assets/sprite_animation.png');
+    background-size: 320px 40px;
+    background-repeat: no-repeat;
+    image-rendering: pixelated;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+    z-index: 100;
+    cursor: url('assets/pixelated-hand-cursor.png') 20 0, pointer !important;
+    
+    /* Increased scale from 2 to 2.5 */
+    transform: scale(4);
+    transform-origin: right center;
+    
+    /* Animation properties - NO MOVING EFFECTS between frames */
+    -webkit-animation: play-sprite 4s steps(1) infinite; /* steps(1) ensures no interpolation */
+    -moz-animation: play-sprite 4s steps(1) infinite;
+    -ms-animation: play-sprite 4s steps(1) infinite;
+    -o-animation: play-sprite 4s steps(1) infinite;
+    animation: play-sprite 4s steps(1) infinite;
+    
+    /* Performance optimizations */
+    will-change: background-position;
+    -webkit-transform: scale(4) translateZ(0); /* Updated scale value here too */
+    -moz-transform: scale(4) translateZ(0);
+    -ms-transform: scale(4) translateZ(0);
+    -o-transform: scale(4) translateZ(0);
+    transform: scale(4) translateZ(0);
+}
+
+/* Static frame keyframes - each frame gets equal time */
+@keyframes play-sprite {
+    0% { background-position: 0 0; }        /* Frame 1 */
+    12.5% { background-position: -40px 0; } /* Frame 2 */
+    25% { background-position: -80px 0; }   /* Frame 3 */
+    37.5% { background-position: -120px 0; }/* Frame 4 */
+    50% { background-position: -160px 0; }  /* Frame 5 */
+    62.5% { background-position: -200px 0; }/* Frame 6 */
+    75% { background-position: -240px 0; }  /* Frame 7 */
+    87.5% { background-position: -280px 0; }/* Frame 8 */
+    100% { background-position: 0 0; }      /* Back to Frame 1 */
+}
+
+/* Cross-browser keyframe definitions */
+@-webkit-keyframes play-sprite {
+    0% { background-position: 0 0; }
+    12.5% { background-position: -40px 0; }
+    25% { background-position: -80px 0; }
+    37.5% { background-position: -120px 0; }
+    50% { background-position: -160px 0; }
+    62.5% { background-position: -200px 0; }
+    75% { background-position: -240px 0; }
+    87.5% { background-position: -280px 0; }
+    100% { background-position: 0 0; }
+}
+
+@-moz-keyframes play-sprite {
+    0% { background-position: 0 0; }
+    12.5% { background-position: -40px 0; }
+    25% { background-position: -80px 0; }
+    37.5% { background-position: -120px 0; }
+    50% { background-position: -160px 0; }
+    62.5% { background-position: -200px 0; }
+    75% { background-position: -240px 0; }
+    87.5% { background-position: -280px 0; }
+    100% { background-position: 0 0; }
+}
+
+@-ms-keyframes play-sprite {
+    0% { background-position: 0 0; }
+    12.5% { background-position: -40px 0; }
+    25% { background-position: -80px 0; }
+    37.5% { background-position: -120px 0; }
+    50% { background-position: -160px 0; }
+    62.5% { background-position: -200px 0; }
+    75% { background-position: -240px 0; }
+    87.5% { background-position: -280px 0; }
+    100% { background-position: 0 0; }
+}
+
+@-o-keyframes play-sprite {
+    0% { background-position: 0 0; }
+    12.5% { background-position: -40px 0; }
+    25% { background-position: -80px 0; }
+    37.5% { background-position: -120px 0; }
+    50% { background-position: -160px 0; }
+    62.5% { background-position: -200px 0; }
+    75% { background-position: -240px 0; }
+    87.5% { background-position: -280px 0; }
+    100% { background-position: 0 0; }
+}
+
+/* Responsive adjustments for the sprite */
+@media screen and (max-width: 768px) {
+    .character-sprite {
+        right: 160px;
+        bottom: 5%;
+        width: 35px;
+        height: 35px;
+        background-size: 280px 35px;
+        transform: scale(1.8);
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .character-sprite {
+        right: 140px;
+        bottom: 5%;
+        width: 30px;
+        height: 30px;
+        background-size: 240px 30px;
+        transform: scale(1.6);
     }
 }
