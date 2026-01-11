@@ -708,8 +708,12 @@
     </div>
 
     <script>
-        // Configuration
-        const GITHUB_USERNAME = 'Mr-Swapnil25';
+        // Configuration - can be overridden via URL parameter: ?user=username
+        function getGitHubUsername() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('user') || 'Mr-Swapnil25';
+        }
+        const GITHUB_USERNAME = getGitHubUsername();
         
         // Language colors mapping
         const languageColors = {
@@ -768,8 +772,11 @@
                 } else {
                     console.warn('Three.js not loaded - 3D features disabled');
                     // Add fallback background
-                    document.getElementById('chess-board-container').style.background = 
-                        'radial-gradient(ellipse at center, #2a2a4e 0%, #1a1a2e 100%)';
+                    const container = document.getElementById('chess-board-container');
+                    if (container) {
+                        container.style.background = 
+                            'radial-gradient(ellipse at center, #2a2a4e 0%, #1a1a2e 100%)';
+                    }
                 }
             } catch (e) {
                 console.error('Three.js initialization error:', e);
