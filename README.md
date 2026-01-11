@@ -25,7 +25,7 @@
 
 | ♟ Boards Conquered | ⭐ Stars Earned | 👥 Followers | 📚 Opening Repertoire |
 |:------------------:|:--------------:|:------------:|:---------------------:|
-| 8 Repositories | Growing | Building | 5+ Languages |
+| 8 Repositories | 0 | 0 | 5 Languages |
 
 </div>
 
@@ -39,7 +39,7 @@
 > *Most impactful projects and core expertise*
 
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
-![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
+![AI/ML](https://img.shields.io/badge/AI%2FML-FF6F00?style=flat-square&logo=tensorflow&logoColor=white)
 
 ### ♕ QUEEN — Primary Expertise  
 > *Most versatile and powerful skill*
@@ -56,8 +56,8 @@
 ### ♗ BISHOPS — Strategic Tools
 > *Cross-platform frameworks and methodologies*
 
-![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
-![Dart](https://img.shields.io/badge/Dart-0175C2?style=flat-square&logo=dart&logoColor=white)
+![GSAP](https://img.shields.io/badge/GSAP-88CE02?style=flat-square&logo=greensock&logoColor=white)
+![Three.js](https://img.shields.io/badge/Three.js-000000?style=flat-square&logo=threedotjs&logoColor=white)
 
 ### ♘ KNIGHTS — Agile Frameworks
 > *Frontend and mobile frameworks*
