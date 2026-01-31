@@ -2,11 +2,12 @@
 
 ## 🌄 Overview
 
+HII
 This project is a **cinematic, interactive portfolio** that showcases my journey in data science, AI tools, and intelligent agent systems. It blends technology, creativity, and functionality, offering visitors a unique, scroll-driven 3D experience. Inspired by modern 3D developer portfolios, this site is both a technical showcase and a personal narrative.
 
 ---
 
-## ✨ Features
+## ✨ Features:
 
 - **Cinematic Parallax Animation:** Multi-layered SVG scenes animated with GSAP and ScrollTrigger for immersive, smooth scrolling.
 - **3D Visual Storytelling:** Each scene represents a chapter of my professional journey, using depth, light, and motion.
